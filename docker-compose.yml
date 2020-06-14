@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  rectifier-dev:
+    container_name: rectifier-dev_cont
+    image: rectifier-template:dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ".:/app"
+    ports:
+      - "5000:5000"
+      - "35729:35729"
+    networks: 
+      - rectifier
+  rectifier-prod:
+    container_name: rectifier-prod_cont
+    image: rectifier-template:prod
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
+    networks: 
+      - rectifier
+networks: 
+  rectifier:
