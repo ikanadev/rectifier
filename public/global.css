@@ -14,7 +14,7 @@ body {
 	background-color: #f8f8f8;
 }
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Heebo', sans-serif;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
 	font-weight: 500;
 }
 /*
@@ -29,4 +29,7 @@ PDFJS styles
 }
 .pdfViewer>.page>.textLayer {
 	display: none;
+}
+:root {
+	--primary: #f83e06;
 }
