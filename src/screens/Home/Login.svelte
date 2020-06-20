@@ -13,7 +13,7 @@
     api.user
       .login(email, password)
       .then((res) => {
-        localStorage.setItem(LS_TOKEN, res.token)
+        localStorage.setItem(LS_TOKEN, `Bearer ${res.token}`)
         user.setUser(res.user)
         popUps.addSuccessPopUp(`Bienvenido a rectify ${res.user.name}!`)
       })

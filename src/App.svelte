@@ -6,18 +6,20 @@
 
 <script>
   import { isLogged } from './store/user'
-  import Header from './components/Header.svelte'
-  import Rectifier from './screens/Rectifier.svelte'
+  import Admin from './screens/Admin.svelte'
   import Home from './screens/Home.svelte'
-  import PopUps from './screens/PopUps.svelte'  
+  import PopUps from './screens/PopUps.svelte'
+  import { checkLogin } from './utils/functions'
+  const promise = checkLogin()
 </script>
 
 <PopUps />
-{#if !$isLogged}
-  <Home />
-{:else}
-  <Header />
-  <div>
-    <Rectifier />
-  </div>
-{/if}
+{#await promise}
+  <h1>LOADING</h1>
+{:then res}
+  {#if res || $isLogged }
+    <Admin />
+  {:else}
+    <Home />
+  {/if}
+{/await} 

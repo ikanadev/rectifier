@@ -1,4 +1,5 @@
 import api from '../api/api'
+import user from '../store/user'
 import { LS_TOKEN } from './consts'
 
 export const getToken = () => {
@@ -13,11 +14,13 @@ export const checkLogin = () => {
     }
     api.user
       .checkToken()
-      .then((user) => {
-        console.log('USER', user)
+      .then((resp) => {
+        user.setUser(resp.user)
+        localStorage.setItem(LS_TOKEN, `Bearer ${resp.token}`)
         resolve(true)
       })
       .catch(() => {
+        localStorage.removeItem(LS_TOKEN)
         resolve(false)    
       })
   })

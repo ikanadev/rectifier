@@ -32,4 +32,8 @@ PDFJS styles
 }
 :root {
 	--primary: #f83e06;
+	--accent: #c9514c;
+	--white: #e3ebeb;
+	--dark: #24242a;
+	--semidark: #a29f9f;
 }

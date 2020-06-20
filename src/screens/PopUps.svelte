@@ -10,6 +10,7 @@
     right: 15px;
     display: flex;
     flex-direction: column;
+    z-index: 25;
   }
 </style>
 
