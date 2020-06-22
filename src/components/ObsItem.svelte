@@ -23,7 +23,6 @@
   }
 </style>
 <script>
-  import { onMount } from 'svelte'
   import Icon from 'svelte-awesome'
   import { plus, minus } from 'svelte-awesome/icons'
   import { tweened } from 'svelte/motion';
@@ -48,9 +47,6 @@
     }
     expanded = !expanded
   }
-  onMount(() => {
-    console.log(bindRef.clientHeight);
-  })
 </script>
 
 <div class="observation" on:click={toogleExpanded} style="--height:{`${$height}px`}">

@@ -9,8 +9,9 @@ const intialState = {
 }
 
 const createUserDataStore = () => {
-  const { set, update } = writable(intialState)
+  const { set, update, subscribe } = writable(intialState)
   return {
+    subscribe,
     clearData: () => set(intialState),
     setProjects: (projects) => {
       const projectsWithDocs = projects.map((project) => ({...project, documents: []}))
@@ -120,4 +121,5 @@ const createUserDataStore = () => {
   }
 }
 
-export const userData = createUserDataStore()
+const userData = createUserDataStore()
+export default userData

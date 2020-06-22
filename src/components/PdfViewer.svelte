@@ -60,7 +60,6 @@
     loadingTask.promise.then(function (doc) {
       pdfViewer.setDocument(doc)
       // pdfViewer.currentScale = 1
-      // console.log(pdfViewer.currentScale);
     })
   }
   onMount(() => {

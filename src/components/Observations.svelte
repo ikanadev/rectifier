@@ -61,8 +61,6 @@
   import ObsItem from './ObsItem.svelte'
 
   export let observations = [];
-
-  console.log(observations);
   
 </script>
 

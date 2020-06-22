@@ -11,7 +11,7 @@ html, body {
 	font-family: inherit;
 }
 body {
-	background-color: #f8f8f8;
+	background-color: var(--background);
 }
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -34,6 +34,10 @@ PDFJS styles
 	--primary: #f83e06;
 	--accent: #c9514c;
 	--white: #e3ebeb;
-	--dark: #24242a;
-	--semidark: #a29f9f;
+	--dark: #a0b0c0;
+	--disabled: #cccccc;
+	--background: #e0e5ec;
+	--blue: #0063B2;
+	--red: #F94647;
+	--text: #515151;
 }
