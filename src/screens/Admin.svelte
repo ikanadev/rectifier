@@ -5,8 +5,10 @@
   import api from '../api/api'
   import { LS_TOKEN } from '../utils/consts'
   import user from '../store/user'
+  import selected from '../store/selected'
   import Header from '../components/Header.svelte'
   import Projects from './Admin/Projects.svelte'
+  import Documents from './Admin/Documents.svelte'
 
   let marginTop = 0
 
@@ -36,16 +38,17 @@
     flex-direction: column;
     align-items: stretch;
   }
-  h2 {
-    margin-top: 20px;
-    margin-bottom: 15px;
-    text-align: center;
-    color: var(--primary);
-  }
 </style>
 
 <Header name={$user.name} actionText="Salir" on:load={onLoadHeader} on:action={onLogout} />
 <main style="--marginTop:{marginTop}px">
-  <h2>Mis Proyectos</h2>
-  <Projects projects={$userData.projects} />
+  {#if $selected.document !== 0}
+    <p>render pdf view</p>
+  {:else}
+    {#if $selected.project !== 0}
+      <Documents />
+    {:else}
+      <Projects projects={$userData.projects} />
+    {/if}
+  {/if}
 </main>

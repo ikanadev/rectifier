@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { writable, derived } from 'svelte/store'
 
 import { normalize } from '../utils/functions'
 
@@ -122,4 +122,17 @@ const createUserDataStore = () => {
 }
 
 const userData = createUserDataStore()
+
+export const getDocuments = (projectID) => derived(userData, ($userData) => {
+  const project = $userData.projects[projectID]
+  if (!project) return {}
+  const documents = $userData.documents
+  return project.documents.reduce((prev, docID) => {
+    if (documents[docID]) {
+      prev[docID] = documents[docID]
+    }
+    return prev
+  }, {})
+})
+
 export default userData

@@ -32,3 +32,11 @@ export const normalize = (objects) => {
     return prev;
   }, {});
 };
+
+export const getDateFromString = (dateStr) => {
+  const date = new Date(dateStr)
+  return `${('0' + date.getDate()).slice(-2)}-${(
+    '0' +
+    (date.getMonth() + 1)
+  ).slice(-2)}-${date.getFullYear()}`
+};

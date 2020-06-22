@@ -57,7 +57,7 @@ export default (axios) => ({
     dataForm.set('comment', comment)
     dataForm.set('document', document)
 
-    const resp = await axios.put(endpoints.user.newDocument, dataForm, config)
+    const resp = await axios.post(endpoints.user.newDocument, dataForm, config)
     return resp.data;
   },
 

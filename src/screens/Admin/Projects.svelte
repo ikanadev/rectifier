@@ -51,6 +51,7 @@
     display: flex;
     font-style: italic;
     margin-top: 5px;
+    flex-wrap: wrap;
   }
   .details p:first-child {
     flex: 1;
@@ -67,25 +68,28 @@
     display: flex;
     justify-content: flex-end;
   }
+  h2 {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: var(--primary);
+  }
 </style>
 
 <script>
-  import { createEventDispatcher } from 'svelte'
   import Icon from 'svelte-awesome'
-  import { times, book, file } from 'svelte-awesome/icons'
-  import { scale } from 'svelte/transition'
+  import { times, book } from 'svelte-awesome/icons'
 
   import api from '../../api/api'
+  import { getDateFromString } from '../../utils/functions'
   import popUps from '../../store/popups'
   import userData from '../../store/userData'
+  import selected from '../../store/selected'
   import DeleteModal from './DeleteModal.svelte'
-  import AddModal from './AddModal.svelte'
+  import AddModal from './AddProjectModal.svelte'
   import FloatButton from '../../components/FloatButton.svelte'
-  import { text } from 'svelte/internal'
 
   export let projects = {}
-
-  const dispatch = createEventDispatcher()
 
   let isOpenAddModal = false
   let isLoadingAddModal = false
@@ -93,12 +97,8 @@
   let isLoadingDelModal = false
   let selectedItem = { id: 0, name: '' }
 
-  const getDateFromString = (dateStr) => {
-    const date = new Date(dateStr)
-    return `${('0' + date.getDate()).slice(-2)}-${(
-      '0' +
-      (date.getMonth() + 1)
-    ).slice(-2)}-${date.getFullYear()}`
+  const onSelect = (projectID) => () => {
+    selected.setProject(projectID)
   }
 
   const onDelete = () => {
@@ -161,10 +161,11 @@
   }
 </script>
 
+<h2>Mis Proyectos</h2>
 <DeleteModal
   open="{isOpenDelModal}"
   loading="{isLoadingDelModal}"
-  message="{`Borrar proyecto ${selectedItem.name}`}"
+  message="{`Borrar proyecto ${selectedItem.name}?`}"
   on:close="{closeDelModal}"
   on:delete="{onDelete}"
 />
@@ -174,7 +175,7 @@
       <span class="bookIcon">
         <Icon data="{book}" scale="2.5" />
       </span>
-      <div>
+      <div on:click={onSelect(projects[key].id)}>
         <h3>{projects[key].name}</h3>
         <hr />
         <div class="details">

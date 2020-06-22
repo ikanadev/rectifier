@@ -17,6 +17,10 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: 'M PLUS Rounded 1c', sans-serif;
 	font-weight: 500;
 }
+main {
+	padding-left: 10px;
+	padding-right: 10px;
+}
 /*
 PDFJS styles
 */
@@ -39,5 +43,6 @@ PDFJS styles
 	--background: #e0e5ec;
 	--blue: #0063B2;
 	--red: #F94647;
+	--green: #71C441;
 	--text: #515151;
 }
