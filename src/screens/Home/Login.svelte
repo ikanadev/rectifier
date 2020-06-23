@@ -1,31 +1,3 @@
-<script>
-  import { fade } from 'svelte/transition'
-
-  import { LS_TOKEN } from '../../utils/consts'
-  import user from '../../store/user'
-  import api from '../../api/api'
-  import popUps from '../../store/popups'
-
-  let email = ''
-  let password = ''
-
-  const handleLogin = () => {
-    api.user
-      .login(email, password)
-      .then((res) => {
-        localStorage.setItem(LS_TOKEN, `Bearer ${res.token}`)
-        user.setUser(res.user)
-        popUps.addSuccessPopUp(`Bienvenido a rectify ${res.user.name}!`)
-      })
-      .catch((err) => {
-        if (!err || !err.data) {
-          popUps.addErrorPopUp('Error conectando al servidor')
-          return
-        }
-        popUps.addWarningPopUp(err.data.message)
-      })
-  }
-</script>
 <style>
   .formCont {
     flex: 1;
@@ -66,8 +38,38 @@
     background: #fa4e16;
   }
 </style>
+
+<script>
+  import { fade } from 'svelte/transition'
+
+  import { LS_TOKEN } from '../../utils/consts'
+  import user from '../../store/user'
+  import api from '../../api/api'
+  import popUps from '../../store/popups'
+
+  let email = ''
+  let password = ''
+
+  const handleLogin = () => {
+    api.user
+      .login(email, password)
+      .then((res) => {
+        localStorage.setItem(LS_TOKEN, `Bearer ${res.token}`)
+        user.setUser(res.user)
+        popUps.addSuccessPopUp(`Bienvenido a rectify ${res.user.name}!`)
+      })
+      .catch((err) => {
+        if (!err || !err.data) {
+          popUps.addErrorPopUp('Error conectando al servidor')
+          return
+        }
+        popUps.addWarningPopUp(err.data.message)
+      })
+  }
+</script>
+
 <form class="formCont" in:fade>
-  <input type="email" bind:value={email} placeholder="Correo electrónico">
-  <input type="password" bind:value={password} placeholder="Password">
-  <button on:click|preventDefault={handleLogin}>INGRESAR</button>
+  <input type="email" bind:value="{email}" placeholder="Correo electrónico" />
+  <input type="password" bind:value="{password}" placeholder="Password" />
+  <button on:click|preventDefault="{handleLogin}">INGRESAR</button>
 </form>

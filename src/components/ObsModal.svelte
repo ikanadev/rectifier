@@ -105,7 +105,7 @@
   }
 </script>
 
-<svelte:window on:keydown={handleKeydown}/>
+<svelte:window on:keydown="{handleKeydown}" />
 {#if !hidden}
   <div style="--top:{top};--left:{left}" transition:fade>
     <span class="titleCont">

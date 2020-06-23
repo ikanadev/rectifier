@@ -1,9 +1,3 @@
-<script>
-  import { createEventDispatcher } from 'svelte'
-  import { fade } from 'svelte/transition'
-
-  export let open = false
-</script>
 <style>
   .cont {
     position: fixed;
@@ -32,11 +26,19 @@
     border-radius: 10px;
   }
 </style>
+
+<script>
+  import { createEventDispatcher } from 'svelte'
+  import { fade } from 'svelte/transition'
+
+  export let open = false
+</script>
+
 {#if open}
-  <div class="cont" transition:fade >
+  <div class="cont" transition:fade>
     <div class="modalCont">
       <div class="modal">
-        <slot></slot>
+        <slot />
       </div>
     </div>
   </div>

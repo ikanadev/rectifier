@@ -18,7 +18,7 @@ const createSelectedStore = () => {
     },
     clearDocument: () => {
       update((data) => ({ ...data, document: 0 }))
-    }
+    },
   }
 }
 

@@ -1,18 +1,3 @@
-<script>
-  import { onMount, createEventDispatcher } from 'svelte'
-  export let name = 'Kevin Vargas'
-  export let actionText = 'Salir'
-
-  let headerRef = null;
-  const dispatch = createEventDispatcher();
-
-  const handleClick = () => {
-    dispatch('action')
-  }
-  onMount(() => {
-    dispatch('load', headerRef ? headerRef.clientHeight : 0)
-  })
-</script>
 <style>
   h1 {
     color: var(--primary);
@@ -62,12 +47,26 @@
   }
 </style>
 
-<header bind:this={headerRef}>
+<script>
+  import { onMount, createEventDispatcher } from 'svelte'
+  export let name = 'Kevin Vargas'
+  export let actionText = 'Salir'
+
+  let headerRef = null
+  const dispatch = createEventDispatcher()
+
+  const handleClick = () => {
+    dispatch('action')
+  }
+  onMount(() => {
+    dispatch('load', headerRef ? headerRef.clientHeight : 0)
+  })
+</script>
+
+<header bind:this="{headerRef}">
   <div class="cont">
     <h1>RECTIFIER</h1>
     <p>{name}</p>
-    <button on:click={handleClick}>
-      {actionText}
-    </button>
+    <button on:click="{handleClick}">{actionText}</button>
   </div>
 </header>

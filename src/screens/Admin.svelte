@@ -1,3 +1,12 @@
+<style>
+  main {
+    margin-top: var(--marginTop);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+</style>
+
 <script>
   import { onMount } from 'svelte'
 
@@ -26,29 +35,22 @@
         userData.setProjects(res.projects)
         console.log(res)
       })
-      .catch((err) => {
-        
-      })
+      .catch((err) => {})
   })
 </script>
-<style>
-  main {
-    margin-top: var(--marginTop);
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-</style>
 
-<Header name={$user.name} actionText="Salir" on:load={onLoadHeader} on:action={onLogout} />
+<Header
+  name="{$user.name}"
+  actionText="Salir"
+  on:load="{onLoadHeader}"
+  on:action="{onLogout}"
+/>
 <main style="--marginTop:{marginTop}px">
   {#if $selected.document !== 0}
     <p>render pdf view</p>
+  {:else if $selected.project !== 0}
+    <Documents />
   {:else}
-    {#if $selected.project !== 0}
-      <Documents />
-    {:else}
-      <Projects projects={$userData.projects} />
-    {/if}
+    <Projects projects="{$userData.projects}" />
   {/if}
 </main>

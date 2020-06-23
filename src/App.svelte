@@ -17,9 +17,9 @@
 {#await promise}
   <h1>LOADING</h1>
 {:then res}
-  {#if res || $isLogged }
+  {#if res || $isLogged}
     <Admin />
   {:else}
     <Home />
   {/if}
-{/await} 
+{/await}

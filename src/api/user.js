@@ -5,7 +5,7 @@ export default (axios) => ({
   login: async (email, password) => {
     const data = {
       email,
-      password
+      password,
     }
     const resp = await axios.post(endpoints.user.login, data)
     return resp.data
@@ -16,7 +16,7 @@ export default (axios) => ({
       name,
       lastName,
       password,
-      email
+      email,
     }
     const resp = await axios.post(endpoints.user.register, data)
     return resp.data
@@ -30,7 +30,7 @@ export default (axios) => ({
   newProject: async (name, institute) => {
     const data = {
       name,
-      institute
+      institute,
     }
     const resp = await axios.post(endpoints.user.newProject, data)
     return resp.data
@@ -51,14 +51,14 @@ export default (axios) => ({
       headers: {
         [CONTENT_TYPE]: MULTIPART_FORM,
       },
-    };
+    }
     const dataForm = new FormData()
     dataForm.set('projectId', projectID)
     dataForm.set('comment', comment)
     dataForm.set('document', document)
 
     const resp = await axios.post(endpoints.user.newDocument, dataForm, config)
-    return resp.data;
+    return resp.data
   },
 
   getProjectDocs: async (projectID) => {
@@ -67,12 +67,14 @@ export default (axios) => ({
   },
 
   genNewDocCode: async (documentID) => {
-    const resp = await axios.patch(endpoints.user.genNewDocumentCode(documentID))
+    const resp = await axios.patch(
+      endpoints.user.genNewDocumentCode(documentID)
+    )
     return resp.data
   },
 
   delDocument: async (documentID) => {
     const resp = await axios.delete(endpoints.user.delDocument(documentID))
     return resp.data
-  }
+  },
 })

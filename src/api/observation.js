@@ -9,7 +9,10 @@ export default (axios) => ({
       text,
       author,
     }
-    const resp = await axios.post(endpoints.observation.newObservation(docCode), data)
+    const resp = await axios.post(
+      endpoints.observation.newObservation(docCode),
+      data
+    )
     return resp.data
   },
 
@@ -19,7 +22,9 @@ export default (axios) => ({
   },
 
   delObservation: async (obsID, docCode) => {
-    const resp = await axios.delete(endpoints.observation.delObservation(obsID, docCode))
+    const resp = await axios.delete(
+      endpoints.observation.delObservation(obsID, docCode)
+    )
     return resp.data
-  }
+  },
 })

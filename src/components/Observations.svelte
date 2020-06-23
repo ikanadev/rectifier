@@ -22,7 +22,7 @@
     font-weight: bold;
     letter-spacing: 0.2em;
     border-radius: 6px;
-    border: none; 
+    border: none;
     height: 35px;
     color: white;
     background: #f83e06;
@@ -60,8 +60,7 @@
 
   import ObsItem from './ObsItem.svelte'
 
-  export let observations = [];
-  
+  export let observations = []
 </script>
 
 <div class="cont">
@@ -70,11 +69,9 @@
     {#if observations.length === 0}
       <span class="noObsCont">
         <span>
-          <Icon data={check} scale="3" class="modalIcon" />
+          <Icon data="{check}" scale="3" class="modalIcon" />
         </span>
-        <p>
-          No hay observaciones por el momento
-        </p>
+        <p>No hay observaciones por el momento</p>
       </span>
     {:else}
       {#each observations as observation}

@@ -1,6 +1,3 @@
-<script>
-  import { fade } from 'svelte/transition'
-</script>
 <style>
   .formCont {
     flex: 1;
@@ -23,7 +20,7 @@
   }
   button {
     border-radius: 6px;
-    border: none; 
+    border: none;
     height: 35px;
     color: white;
     background: #f83e06;
@@ -37,10 +34,15 @@
     background: #fa4e16;
   }
 </style>
+
+<script>
+  import { fade } from 'svelte/transition'
+</script>
+
 <form class="formCont" in:fade>
-  <input type="text" placeholder="Nombre(s)">
-  <input type="text" placeholder="Apellido(s)">
-  <input type="text" placeholder="Correo electrónico">
-  <input type="password" placeholder="Password">
+  <input type="text" placeholder="Nombre(s)" />
+  <input type="text" placeholder="Apellido(s)" />
+  <input type="text" placeholder="Correo electrónico" />
+  <input type="password" placeholder="Password" />
   <button>REGISTRARME</button>
 </form>

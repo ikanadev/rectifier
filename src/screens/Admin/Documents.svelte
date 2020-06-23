@@ -108,12 +108,26 @@
     display: flex;
     justify-content: flex-end;
   }
+  .code {
+    font-size: 35px;
+    font-family: monospace;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
 </style>
 
 <script>
   import { onMount } from 'svelte'
   import Icon from 'svelte-awesome'
-  import { clockO, check, arrowLeft, filePdfO, times, key as keyData } from 'svelte-awesome/icons'
+  import {
+    clockO,
+    check,
+    arrowLeft,
+    filePdfO,
+    times,
+    key as keyData,
+  } from 'svelte-awesome/icons'
 
   import api from '../../api/api'
   import { getDateFromString } from '../../utils/functions'
@@ -121,6 +135,8 @@
   import popUps from '../../store/popups'
   import userData, { getDocuments } from '../../store/userData'
 
+  import Modal from '../../components/Modal.svelte'
+  import Button from '../../components/Button.svelte'
   import FloatButton from '../../components/FloatButton.svelte'
   import AddDocModal from './AddDocModal.svelte'
   import DeleteModal from './DeleteModal.svelte'
@@ -132,7 +148,9 @@
   let isLoadingAddModal = false
   let isOpenDelModal = false
   let isLoadingDelModal = false
+  let isOpenCodeModal = false
   let selectedID = 0
+  let selectedCode = ''
 
   const onDelete = () => {
     isLoadingDelModal = true
@@ -154,7 +172,7 @@
         popUps.addWarningPopUp(err.data.message)
       })
   }
-  const onRegister = ({ detail: { text, file }}) => {
+  const onRegister = ({ detail: { text, file } }) => {
     isLoadingAddModal = true
     api.user
       .newDocument(project.id, text, file)
@@ -190,6 +208,13 @@
   const closeDelModal = () => {
     isOpenDelModal = false
   }
+  const openCodeModal = (code) => () => {
+    selectedCode = code
+    isOpenCodeModal = true
+  }
+  const closeCodeModal = () => {
+    isOpenCodeModal = false
+  }
   onMount(() => {
     if (Object.keys($documents).length === 0) {
       api.user
@@ -204,30 +229,36 @@
   })
 </script>
 
+<Modal open="{isOpenCodeModal}">
+  <p>Envía este código a tu revisor:</p>
+  <p class="code">{selectedCode}</p>
+  <Button on:action="{closeCodeModal}" text="CERRAR" />
+</Modal>
 <DeleteModal
-  open={isOpenDelModal}
-  loading={isLoadingDelModal}
-  message={`Borrar documento?`}
-  on:close={closeDelModal}
-  on:delete={onDelete}
+  open="{isOpenDelModal}"
+  loading="{isLoadingDelModal}"
+  message="{`Borrar documento?`}"
+  on:close="{closeDelModal}"
+  on:delete="{onDelete}"
 />
 <AddDocModal
-  open={isOpenAddModal}
-  loading={isLoadingAddModal}
-  on:close={closeAddModal}
-  on:register={onRegister}
+  open="{isOpenAddModal}"
+  loading="{isLoadingAddModal}"
+  on:close="{closeAddModal}"
+  on:register="{onRegister}"
 />
 <div class="titleCont">
   <div>
-    <span class="backIcon" on:click={goBack}>
-      <Icon data={arrowLeft} scale="1.5" />
+    <span class="backIcon" on:click="{goBack}">
+      <Icon data="{arrowLeft}" scale="1.5" />
     </span>
     <h2>Documentos de {project.name}</h2>
   </div>
 </div>
 <div class="titleCont">
   <div>
-    <p>Para compartir un documento con tu revisor, presiona el ícono
+    <p>
+      Para compartir un documento con tu revisor, presiona el ícono
       <span>
         <Icon data="{keyData}" />
       </span>
@@ -238,24 +269,27 @@
 {#each Object.keys($documents) as key}
   <div class="itemCont">
     <article>
-      <span class="icon checkIcon" class:checked={$documents[key].rectified} on:click="{openDelModal($documents[key].id)}">
+      <span class="icon checkIcon" class:checked="{$documents[key].rectified}">
         <Icon data="{$documents[key].rectified ? check : clockO}" scale="2" />
       </span>
       <span class="pdfIcon">
         <Icon data="{filePdfO}" scale="2.5" />
       </span>
       <div>
-        <p>
-          {$documents[key].comment}
-        </p>
+        <p>{$documents[key].comment}</p>
         <hr />
         <div class="details">
           <!-- <p>{$documents[key].accessCode}</p> -->
-          <p>Estado: {$documents[key].rectified ? 'Revisado' : 'Por revisar.'}</p>
+          <p>
+            Estado: {$documents[key].rectified ? 'Revisado' : 'Por revisar.'}
+          </p>
           <p>Creado el: {getDateFromString($documents[key].created_at)}</p>
         </div>
       </div>
-      <span class="icon keyIcon" on:click="{openDelModal($documents[key].id)}">
+      <span
+        class="icon keyIcon"
+        on:click="{openCodeModal($documents[key].accessCode)}"
+      >
         <Icon data="{keyData}" scale="2" />
       </span>
       <span class="icon delIcon" on:click="{openDelModal($documents[key].id)}">

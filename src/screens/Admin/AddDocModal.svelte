@@ -111,7 +111,7 @@
         <Button
           disabled="{loading}"
           primary
-          text={file.size === 0 ? 'Agregar PDF' : 'Cambiar PDF'}
+          text="{file.size === 0 ? 'Agregar PDF' : 'Cambiar PDF'}"
           on:action="{onOpenFileSelecter}"
         />
       </label>

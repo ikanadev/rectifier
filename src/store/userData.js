@@ -14,8 +14,11 @@ const createUserDataStore = () => {
     subscribe,
     clearData: () => set(intialState),
     setProjects: (projects) => {
-      const projectsWithDocs = projects.map((project) => ({...project, documents: []}))
-      update((data) => ({ ...data, projects: normalize(projectsWithDocs)}))
+      const projectsWithDocs = projects.map((project) => ({
+        ...project,
+        documents: [],
+      }))
+      update((data) => ({ ...data, projects: normalize(projectsWithDocs) }))
     },
 
     addProject: (project) => {
@@ -23,8 +26,8 @@ const createUserDataStore = () => {
         ...data,
         projects: {
           ...data.projects,
-          [project.id]: {...project, documents: []}
-        }
+          [project.id]: { ...project, documents: [] },
+        },
       }))
     },
 
@@ -38,16 +41,19 @@ const createUserDataStore = () => {
 
     setDocuments: (projectID, documents) => {
       const documentIDs = documents.map((doc) => doc.id)
-      const documentsWithObs = documents.map((doc) => ({...doc, observations: []}))
+      const documentsWithObs = documents.map((doc) => ({
+        ...doc,
+        observations: [],
+      }))
       update((data) => {
         const newProjects = {
           ...data.projects,
-          [projectID]: {...data.projects[projectID], documents: documentIDs}
+          [projectID]: { ...data.projects[projectID], documents: documentIDs },
         }
         return {
           ...data,
-          documents: {...data.documents, ...normalize(documentsWithObs)},
-          projects: newProjects
+          documents: { ...data.documents, ...normalize(documentsWithObs) },
+          projects: newProjects,
         }
       })
     },
@@ -58,16 +64,16 @@ const createUserDataStore = () => {
           ...data.projects,
           [projectID]: {
             ...data.projects[projectID],
-            documents: [...data.projects[projectID].documents, document.id]
-          }
+            documents: [...data.projects[projectID].documents, document.id],
+          },
         }
         return {
           ...data,
           documents: {
             ...data.documents,
-            [document.id]: {...document, observations: []}
+            [document.id]: { ...document, observations: [] },
           },
-          projects: updatedProjects
+          projects: updatedProjects,
         }
       })
     },
@@ -79,9 +85,9 @@ const createUserDataStore = () => {
           ...data.documents,
           [document.id]: {
             ...document,
-            observations: data.documents[document.id].observations
-          }
-        }
+            observations: data.documents[document.id].observations,
+          },
+        },
       }))
     },
 
@@ -91,15 +97,17 @@ const createUserDataStore = () => {
           ...data.projects,
           [projectID]: {
             ...data.projects[projectID],
-            documents: data.projects[projectID].documents.filter((docID) => docID !== projectID)
-          }
+            documents: data.projects[projectID].documents.filter(
+              (docID) => docID !== projectID
+            ),
+          },
         }
         const newDocuments = data.documents
         delete newDocuments[documentID]
         return {
           ...data,
           projects: newProjects,
-          documents: newDocuments
+          documents: newDocuments,
         }
       })
     },
@@ -109,30 +117,31 @@ const createUserDataStore = () => {
       update((data) => {
         const newDocuments = {
           ...data.documents,
-          [documentID]: {...data.documents[documentID], observations: obsIds}
+          [documentID]: { ...data.documents[documentID], observations: obsIds },
         }
         return {
           ...data,
           documents: newDocuments,
-          observations: {...data.observations, ...normalize(observations)}
+          observations: { ...data.observations, ...normalize(observations) },
         }
       })
-    }
+    },
   }
 }
 
 const userData = createUserDataStore()
 
-export const getDocuments = (projectID) => derived(userData, ($userData) => {
-  const project = $userData.projects[projectID]
-  if (!project) return {}
-  const documents = $userData.documents
-  return project.documents.reduce((prev, docID) => {
-    if (documents[docID]) {
-      prev[docID] = documents[docID]
-    }
-    return prev
-  }, {})
-})
+export const getDocuments = (projectID) =>
+  derived(userData, ($userData) => {
+    const project = $userData.projects[projectID]
+    if (!project) return {}
+    const documents = $userData.documents
+    return project.documents.reduce((prev, docID) => {
+      if (documents[docID]) {
+        prev[docID] = documents[docID]
+      }
+      return prev
+    }, {})
+  })
 
 export default userData

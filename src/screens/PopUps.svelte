@@ -1,8 +1,3 @@
-<script>
-  import popUps from '../store/popups'
-  import Popup from '../components/Popup.svelte'
-</script>
-
 <style>
   .cont {
     position: fixed;
@@ -14,8 +9,13 @@
   }
 </style>
 
+<script>
+  import popUps from '../store/popups'
+  import Popup from '../components/Popup.svelte'
+</script>
+
 <div class="cont">
   {#each $popUps as popUp (popUp.id)}
-    <Popup item={popUp} />
+    <Popup item="{popUp}" />
   {/each}
 </div>

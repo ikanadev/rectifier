@@ -122,7 +122,7 @@
       })
   }
 
-  const onRegister = ({ detail: { name, institute }}) => {
+  const onRegister = ({ detail: { name, institute } }) => {
     if (name.trim() === '' || institute.trim() === '') {
       popUps.addWarningPopUp('Nombre e institución no pueden estar vacíos')
       return
@@ -175,7 +175,7 @@
       <span class="bookIcon">
         <Icon data="{book}" scale="2.5" />
       </span>
-      <div on:click={onSelect(projects[key].id)}>
+      <div on:click="{onSelect(projects[key].id)}">
         <h3>{projects[key].name}</h3>
         <hr />
         <div class="details">

@@ -1,31 +1,3 @@
-<script>
-  import { onMount } from 'svelte';
-  import { slide } from 'svelte/transition'
-  import Icon from 'svelte-awesome'
-  import { times, check, exclamation, exclamationTriangle } from 'svelte-awesome/icons'
-
-  import popUps from '../store/popups'
-
-  export let item = {id: '', message: '', type: 'warning'}
-
-  $: color = () => {
-    if (item.type === 'error') {
-      return '#F94647'
-    }
-    return item.type === 'success' ? '#71C441' : '#FCB200'
-  }
-
-  const close = () => {
-    popUps.removePopUp(item.id)
-  }
-
-  onMount(() => {
-    setTimeout(() => {
-      close()
-    }, 4500)
-  })
-</script>
-
 <style>
   .cont {
     margin-bottom: 12px;
@@ -58,21 +30,54 @@
     align-items: center;
   }
   .closeCont:hover {
-    background: #BBB;
+    background: #bbb;
   }
 </style>
+
+<script>
+  import { onMount } from 'svelte'
+  import { slide } from 'svelte/transition'
+  import Icon from 'svelte-awesome'
+  import {
+    times,
+    check,
+    exclamation,
+    exclamationTriangle,
+  } from 'svelte-awesome/icons'
+
+  import popUps from '../store/popups'
+
+  export let item = { id: '', message: '', type: 'warning' }
+
+  $: color = () => {
+    if (item.type === 'error') {
+      return '#F94647'
+    }
+    return item.type === 'success' ? '#71C441' : '#FCB200'
+  }
+
+  const close = () => {
+    popUps.removePopUp(item.id)
+  }
+
+  onMount(() => {
+    setTimeout(() => {
+      close()
+    }, 4500)
+  })
+</script>
 
 <div class="cont" transition:slide style="--color:{color()}">
   <span class="icon">
     <Icon
       scale="2"
-      data={item.type === 'success' ? check : (item.type === 'warning' ? exclamation : exclamationTriangle)}
+      data="{item.type === 'success' ? check : item.type === 'warning' ? exclamation : exclamationTriangle}"
     />
   </span>
   <div class="message">
     <p>{item.message}</p>
   </div>
-  <span class="closeCont" on:click={close}>
-    <Icon data={times} />
+  <span class="closeCont" on:click="{close}">
+    <Icon data="{times}" />
   </span>
 </div>

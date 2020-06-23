@@ -1,20 +1,3 @@
-<script>
-  import Icon from 'svelte-awesome'
-  import { plus } from 'svelte-awesome/icons'
-  import { createEventDispatcher } from 'svelte'
-
-  export let red = false
-  export let blue = false
-  export let primary = false
-  export let disabled = false
-  export let type = 'button'
-
-  const dispatch = createEventDispatcher()
-  const onClick = () => {
-    dispatch('action')
-  }
-</script>
-
 <style>
   button {
     border: none;
@@ -50,6 +33,31 @@
   }
 </style>
 
-<button type={type} class:red class:blue class:primary class:disabled on:click|preventDefault={onClick} disabled={disabled}>
+<script>
+  import Icon from 'svelte-awesome'
+  import { plus } from 'svelte-awesome/icons'
+  import { createEventDispatcher } from 'svelte'
+
+  export let red = false
+  export let blue = false
+  export let primary = false
+  export let disabled = false
+  export let type = 'button'
+
+  const dispatch = createEventDispatcher()
+  const onClick = () => {
+    dispatch('action')
+  }
+</script>
+
+<button
+  {type}
+  class:red
+  class:blue
+  class:primary
+  class:disabled
+  on:click|preventDefault="{onClick}"
+  {disabled}
+>
   <Icon data="{plus}" scale="2" />
 </button>

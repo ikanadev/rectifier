@@ -1,6 +1,3 @@
-<script>
-  import { fade } from 'svelte/transition'
-</script>
 <style>
   .formCont {
     flex: 1;
@@ -23,7 +20,7 @@
   }
   button {
     border-radius: 6px;
-    border: none; 
+    border: none;
     height: 35px;
     color: white;
     background: #f83e06;
@@ -37,8 +34,13 @@
     background: #fa4e16;
   }
 </style>
+
+<script>
+  import { fade } from 'svelte/transition'
+</script>
+
 <form class="formCont" in:fade>
   <p>Si usted es un revisor, ingrese el código acá:</p>
-  <input type="text" placeholder="Código del Documento">
+  <input type="text" placeholder="Código del Documento" />
   <button>REVISAR DOCUMENTO</button>
 </form>

@@ -21,17 +21,17 @@ export const checkLogin = () => {
       })
       .catch(() => {
         localStorage.removeItem(LS_TOKEN)
-        resolve(false)    
+        resolve(false)
       })
   })
 }
 
 export const normalize = (objects) => {
   return objects.reduce((prev, current) => {
-    prev[current.id] = current;
-    return prev;
-  }, {});
-};
+    prev[current.id] = current
+    return prev
+  }, {})
+}
 
 export const getDateFromString = (dateStr) => {
   const date = new Date(dateStr)
@@ -39,4 +39,4 @@ export const getDateFromString = (dateStr) => {
     '0' +
     (date.getMonth() + 1)
   ).slice(-2)}-${date.getFullYear()}`
-};
+}

@@ -1,19 +1,9 @@
-<script>
-  import PaperSVG from '../assets/paper.svelte'
-  import DocumentSVG from '../assets/document.svelte'
-
-  import Code from './Home/Code.svelte'
-  import Register from './Home/Register.svelte'
-  import Login from './Home/Login.svelte'
-  // selected can be review, login and register
-  let selected = 'login'
-</script>
 <style>
   .cont {
     width: 100%;
     height: 100vh;
-    background: #F27121;
-    background: linear-gradient(90deg, #8A2387 0%, #E94057 75%, #F27121 100%);
+    background: #f27121;
+    background: linear-gradient(90deg, #8a2387 0%, #e94057 75%, #f27121 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -84,11 +74,26 @@
     display: none;
   }
 </style>
+
+<script>
+  import PaperSVG from '../assets/paper.svelte'
+  import DocumentSVG from '../assets/document.svelte'
+
+  import Code from './Home/Code.svelte'
+  import Register from './Home/Register.svelte'
+  import Login from './Home/Login.svelte'
+  // selected can be review, login and register
+  let selected = 'login'
+</script>
+
 <div class="cont">
   <div class="content">
     <div class="svgCont">
       <h1>RECTIFIER</h1>
-      <p>Herramienta que te permite almacenar y administrar documentos que requieren revisión en formato PDF.</p>
+      <p>
+        Herramienta que te permite almacenar y administrar documentos que
+        requieren revisión en formato PDF.
+      </p>
       <div>
         <PaperSVG />
       </div>
@@ -107,22 +112,28 @@
         <Register />
       {/if}
       <div class="buttons">
-        O también puede: 
+        O también puede:
         <h3
           class:hidden="{selected === 'review'}"
-          on:click="{() => { selected = 'review'}}"
+          on:click="{() => {
+            selected = 'review'
+          }}"
         >
           Revisar PDF
         </h3>
         <h3
           class:hidden="{selected === 'login'}"
-          on:click="{() => { selected = 'login'}}"
+          on:click="{() => {
+            selected = 'login'
+          }}"
         >
           Ingresar
         </h3>
         <h3
           class:hidden="{selected === 'register'}"
-          on:click="{() => { selected = 'register'}}"
+          on:click="{() => {
+            selected = 'register'
+          }}"
         >
           Registrarse
         </h3>
