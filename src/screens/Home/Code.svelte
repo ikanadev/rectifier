@@ -33,14 +33,51 @@
   button:hover {
     background: #fa4e16;
   }
+  .disabled {
+    background: var(--disabled);
+  }
+  .disabled:hover {
+    background: var(--disabled);
+  }
 </style>
 
 <script>
   import { fade } from 'svelte/transition'
+
+  import api from '../../api/api'
+  import document from '../../store/document'
+  import popUps from '../../store/popups'
+
+  let code  = ''
+  let loading = false
+
+  const onSubmit = () => {
+    loading = true
+    api.observation.docObservations(code)
+      .then((res) => {
+        loading = false
+        document.setDocument(res)
+      })
+      .catch((err) => {
+        loading = false
+        if (!err || !err.data) {
+          popUps.addErrorPopUp('Error conectando al servidor')
+          return
+        }
+        popUps.addWarningPopUp(err.data.message)
+      })
+  }
 </script>
 
 <form class="formCont" in:fade>
   <p>Si usted es un revisor, ingrese el código acá:</p>
-  <input type="text" placeholder="Código del Documento" />
-  <button>REVISAR DOCUMENTO</button>
+  <input
+    bind:value="{code}"
+    type="text"
+    placeholder="Código del Documento"
+    disabled={loading}
+  />
+  <button class:disabled={loading} disabled={loading} on:click|preventDefault="{onSubmit}">
+    {loading ? 'VERIFICANDO' : 'REVISAR DOCUMENTO'}
+  </button>
 </form>

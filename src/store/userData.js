@@ -98,7 +98,7 @@ const createUserDataStore = () => {
           [projectID]: {
             ...data.projects[projectID],
             documents: data.projects[projectID].documents.filter(
-              (docID) => docID !== projectID
+              (docID) => docID !== documentID
             ),
           },
         }

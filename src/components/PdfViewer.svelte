@@ -82,7 +82,7 @@
     left="{`${modalCoords.x + 10}px`}"
     hidden="{!showModal}"
     onClose="{closeModal}"
-    markerCoords="markerCoords"
+    markerCoords="{markerCoords}"
   />
   <div
     class="{'pdfjs-container'}"

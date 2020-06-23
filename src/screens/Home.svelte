@@ -83,7 +83,7 @@
   import Register from './Home/Register.svelte'
   import Login from './Home/Login.svelte'
   // selected can be review, login and register
-  let selected = 'login'
+  let selected = 'review'
 </script>
 
 <div class="cont">
