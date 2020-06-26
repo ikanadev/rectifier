@@ -85,7 +85,7 @@
   import popUps from '../../store/popups'
   import userData from '../../store/userData'
   import selected from '../../store/selected'
-  import DeleteModal from './DeleteModal.svelte'
+  import DeleteModal from '../../components/DeleteModal.svelte'
   import AddModal from './AddProjectModal.svelte'
   import FloatButton from '../../components/FloatButton.svelte'
 

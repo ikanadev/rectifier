@@ -23,7 +23,7 @@
     <Admin />
   {:else}
     {#if Object.keys($document).length > 0}
-      <Document />
+      <Document editable={true} />
     {:else}
       <Home />
     {/if}

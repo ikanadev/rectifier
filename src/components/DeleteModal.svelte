@@ -14,8 +14,8 @@
 
 <script>
   import { createEventDispatcher } from 'svelte'
-  import Button from '../../components/Button.svelte'
-  import Modal from '../../components/Modal.svelte'
+  import Button from './Button.svelte'
+  import Modal from './Modal.svelte'
 
   export let open = false
   export let loading = false

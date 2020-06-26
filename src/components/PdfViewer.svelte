@@ -1,4 +1,9 @@
 <style>
+  @keyframes alert {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
   .pdfjs-container {
     width: 100%;
     position: relative;
@@ -16,12 +21,20 @@
   .iconCont:hover {
     color: #f83e06;
   }
+  .selected {
+    animation: alert 2s infinite;
+    color: #f83e06;
+    transform: scale(1.2);
+  }
+  .selected:hover {
+    color: #f83e0681;
+  }
 </style>
 
 <script>
   import Icon from 'svelte-awesome'
   import { exclamationCircle } from 'svelte-awesome/icons'
-  import { onMount } from 'svelte'
+  import { onMount, createEventDispatcher } from 'svelte'
   import pdfjsLib from 'pdfjs-dist'
   import pdfjsViewer, { EventBus } from 'pdfjs-dist/web/pdf_viewer.js'
 
@@ -29,10 +42,15 @@
 
   export let pdfPath
   export let observations = []
+  export let selectedObs = { id: 0, x: 0, y: 0 }
+  export let isOpenObsModal = false
+  export let isLoadingObsModal = false
+  export let editable = false
 
   const workerPath = '/pdf.worker.min.js'
+  const dispatch = createEventDispatcher()
 
-  let showModal = false
+  let loading = true
   let modalCoords = {
     x: 0,
     y: 0,
@@ -47,7 +65,7 @@
   pdfjsLib.GlobalWorkerOptions.workerSrc = workerPath
 
   const closeModal = () => {
-    showModal = false
+    dispatch('closeObsModal')
   }
 
   function load() {
@@ -58,6 +76,7 @@
     })
     var loadingTask = pdfjsLib.getDocument(pdfPath)
     loadingTask.promise.then(function (doc) {
+      loading = false
       pdfViewer.setDocument(doc)
       // pdfViewer.currentScale = 1
     })
@@ -66,23 +85,32 @@
     load()
   })
   const handleClick = (e) => {
+    if (!editable) {
+      return
+    }
     modalCoords = { x: e.clientX, y: e.clientY + scrollY }
-    showModal = true
+    dispatch('openObsModal')
     const divPos = e.currentTarget.getBoundingClientRect()
-    const x = e.pageX - divPos.left
-    const y = e.pageY - divPos.top
+    const x = Math.round(e.pageX - divPos.left)
+    const y = Math.round(e.pageY - (divPos.top + scrollY))
     markerCoords = { x, y }
+  }
+  const handleObsClick = (observation) => (e) => {
+    e.stopPropagation()
+    dispatch('selectObs', observation)
   }
 </script>
 
 <svelte:window bind:scrollY />
 <div>
   <ObsModal
-    top="{`${modalCoords.y - 30 - (showModal ? scrollY : 0)}px`}"
+    top="{`${modalCoords.y - 30 - (isOpenObsModal ? scrollY : 0)}px`}"
     left="{`${modalCoords.x + 10}px`}"
-    hidden="{!showModal}"
+    hidden="{!isOpenObsModal}"
+    isLoading={isLoadingObsModal}
     onClose="{closeModal}"
-    markerCoords="{markerCoords}"
+    {markerCoords}
+    on:newObservation
   />
   <div
     class="{'pdfjs-container'}"
@@ -90,13 +118,19 @@
     on:click="{handleClick}"
   >
     <div class="{'pdfViewer'}"></div>
-    {#each observations as { x, y }}
-      <span
-        class="iconCont"
-        style="--top:{`${y - 21}px`};--left:{`${x - 21}px`}"
-      >
-        <Icon data="{exclamationCircle}" scale="3" />
-      </span>
-    {/each}
+    {#if loading}
+      <h1>LOADING...</h1>
+    {:else}
+      {#each observations as { x, y, id, text }}
+        <span
+          class="iconCont"
+          style="--top:{`${y - 21}px`};--left:{`${x - 21}px`}"
+          on:click="{handleObsClick({ x, y, id, text })}"
+          class:selected="{selectedObs.id === id}"
+        >
+          <Icon data="{exclamationCircle}" scale="3" />
+        </span>
+      {/each}
+    {/if}
   </div>
 </div>

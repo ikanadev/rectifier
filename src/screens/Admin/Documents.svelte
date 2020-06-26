@@ -139,7 +139,7 @@
   import Button from '../../components/Button.svelte'
   import FloatButton from '../../components/FloatButton.svelte'
   import AddDocModal from './AddDocModal.svelte'
-  import DeleteModal from './DeleteModal.svelte'
+  import DeleteModal from '../../components/DeleteModal.svelte'
 
   const project = $userData.projects[$selected.project]
   let documents = getDocuments(project.id)

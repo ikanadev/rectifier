@@ -16,5 +16,6 @@ export default {
     newObservation: (docCode) => `v1/observation/${docCode}`,
     docObservations: (docCode) => `v1/documentobs/${docCode}`,
     delObservation: (obsID, docCode) => `v1/observation/${obsID}/${docCode}`,
+    rectifyDocument: (docCode) => `v1/documentrectify/${docCode}`,
   },
 }

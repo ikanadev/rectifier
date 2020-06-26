@@ -61,6 +61,8 @@
   import ObsItem from './ObsItem.svelte'
 
   export let observations = []
+  export let selectedObs = { id: 0, x: 0, y: 0 }
+  export let editable = false
 </script>
 
 <div class="cont">
@@ -75,7 +77,13 @@
       </span>
     {:else}
       {#each observations as observation}
-        <ObsItem {observation} />
+        <ObsItem
+          {observation}
+          expanded={selectedObs.id === observation.id}
+          on:selectObs
+          on:delete
+          {editable}
+        />
       {/each}
     {/if}
   </div>

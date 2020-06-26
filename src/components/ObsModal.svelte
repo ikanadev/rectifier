@@ -75,9 +75,13 @@
   button:hover {
     background: #fa4e16;
   }
+  .disabled, .disabled:hover {
+    background: var(--disabled);
+  }
 </style>
 
 <script>
+  import { createEventDispatcher } from 'svelte'
   import Icon from 'svelte-awesome'
   import { times } from 'svelte-awesome/icons'
   import { fade } from 'svelte/transition'
@@ -85,9 +89,11 @@
   export let top = 100
   export let left = 100
   export let hidden = false
+  export let isLoading = false
   export let onClose = () => {}
   export let markerCoords = { x: 0, y: 0 }
 
+  const dispatch = createEventDispatcher()
   let text = ''
 
   const onSubmit = () => {
@@ -96,7 +102,7 @@
       y: markerCoords.y,
       text,
     }
-    console.log(data)
+    dispatch('newObservation', data)
   }
   const handleKeydown = (e) => {
     if (e.keyCode === 27) {
@@ -114,7 +120,9 @@
         <Icon data="{times}" scale="1.5" class="modalIcon" />
       </span>
     </span>
-    <textarea rows="3" bind:value="{text}"></textarea>
-    <button on:click="{onSubmit}">REGISTRAR OBSERVACIÓN</button>
+    <textarea rows="3" bind:value="{text}" disabled={isLoading}></textarea>
+    <button on:click="{onSubmit}" class:disabled={isLoading}>
+      {isLoading ? 'REGISTRANDO...' : 'REGISTRAR'}
+    </button>
   </div>
 {/if}

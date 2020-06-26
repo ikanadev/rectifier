@@ -48,17 +48,25 @@
   import { LIC_NAME } from '../utils/consts'
   import popUps from '../store/popups'
   import document from '../store/document'
+  import api from '../api/api'
 
   import Header from '../components/Header.svelte'
   import Modal from '../components/Modal.svelte'
   import Button from '../components/Button.svelte'
   import PdfViewer from '../components/PdfViewer.svelte'
   import Observations from '../components/Observations.svelte'
+  import DeleteModal from '../components/DeleteModal.svelte'
 
+  export let editable = false
 
   let marginTop = 0
   let name = ''
   let isOpenModal = true
+  let isLoadingObsModal = false
+  let isOpenObsModal = false
+  let isOpenDelObsModal = false
+  let isLoadingDelObsModal = false
+  let selectedObs = { id: 0, x: 0, y:0, text: '' }
 
   const onContinue = () => {
     if (name.trim() === '') {
@@ -74,6 +82,63 @@
   const onFinish = () => {
     console.log('FINISH')
   }
+  const newObservation = ({ detail }) => {
+    isLoadingObsModal = true
+    api.observation
+      .newObservation($document.id, detail.x, detail.y, detail.text, name, $document.accessCode)
+      .then((res) => {
+        popUps.addSuccessPopUp('Observación registrada')
+        document.addObservation(res)
+        isLoadingObsModal = false
+        isOpenObsModal = false
+      })
+      .catch((err) => {
+        isLoadingObsModal = false
+        if (!err || !err.data) {
+          popUps.addErrorPopUp('Error conectando al servidor')
+          return
+        }
+        popUps.addWarningPopUp(err.data.message)
+      })
+  }
+  const onSelectObservation = ({ detail }) => {
+    selectedObs = detail
+    window.scrollTo({
+      top: selectedObs.y - 60,
+      behavior: 'smooth'
+    });
+  }
+  const deleteObservation = () => {
+    isLoadingDelObsModal = true
+    api.observation
+      .delObservation(selectedObs.id, $document.accessCode)
+      .then(() => {
+        isLoadingDelObsModal = false
+        popUps.addSuccessPopUp('Observación eliminada')
+        document.deleteObservation(selectedObs.id)
+        isOpenDelObsModal = false
+      })
+      .catch((err) => {
+        isLoadingDelObsModal = false
+        if (!err || !err.data) {
+          popUps.addErrorPopUp('Error conectando al servidor')
+          return
+        }
+        popUps.addWarningPopUp(err.data.message)
+      })
+  }
+  const onDeleteObservation = () => {
+    isOpenDelObsModal = true
+  }
+  const openObsModal = () => {
+    isOpenObsModal = true
+  }
+  const closeObsModal = () => {
+    isOpenObsModal = false
+  }
+  const closeDelObsModal = () => {
+    isOpenDelObsModal = false
+  }
   onMount(() => {
     const localValue = localStorage.getItem(LIC_NAME)
     if (localValue !== null) {
@@ -88,6 +153,13 @@
   on:load={onLoadHeader}
   on:action={onFinish}
 />
+<DeleteModal
+  message={`Borrar observación: ${selectedObs.text}`}
+  open={isOpenDelObsModal}
+  loading={isLoadingDelObsModal}
+  on:delete={deleteObservation}
+  on:close={closeDelObsModal}
+/>
 <Modal open={isOpenModal}>
   <h3>Ingrese su Nombre</h3>
   <div class="inputCont">
@@ -101,9 +173,26 @@
 </Modal>
 <main style="--marginTop:{marginTop}px">
   <div class="pdfCont">
-    <PdfViewer pdfPath={$document.url} observations={$document.observations} />
+    <PdfViewer
+      editable={editable}
+      pdfPath={$document.url}
+      observations={$document.observations}
+      selectedObs={selectedObs}
+      on:selectObs={onSelectObservation}
+      on:newObservation={newObservation}
+      on:openObsModal={openObsModal}
+      on:closeObsModal={closeObsModal}
+      {isOpenObsModal}
+      {isLoadingObsModal}
+    />
   </div>
   <div class="observationsCont">
-    <Observations observations={$document.observations} />
+    <Observations
+      editable={editable}
+      observations={$document.observations}
+      selectedObs={selectedObs}
+      on:selectObs={onSelectObservation}
+      on:delete={onDeleteObservation}
+    />
   </div>
 </main>
