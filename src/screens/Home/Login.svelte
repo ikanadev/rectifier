@@ -37,6 +37,9 @@
   button:hover {
     background: #fa4e16;
   }
+  .loading, .loading:hover {
+    background: var(--disabled);
+  }
 </style>
 
 <script>
@@ -49,16 +52,20 @@
 
   let email = ''
   let password = ''
+  let loading = false
 
   const handleLogin = () => {
+    loading = true
     api.user
       .login(email, password)
       .then((res) => {
+        loading = false
         localStorage.setItem(LS_TOKEN, `Bearer ${res.token}`)
         user.setUser(res.user)
         popUps.addSuccessPopUp(`Bienvenido a rectify ${res.user.name}!`)
       })
       .catch((err) => {
+        loading = false
         if (!err || !err.data) {
           popUps.addErrorPopUp('Error conectando al servidor')
           return
@@ -71,5 +78,11 @@
 <form class="formCont" in:fade>
   <input type="email" bind:value="{email}" placeholder="Correo electrónico" />
   <input type="password" bind:value="{password}" placeholder="Password" />
-  <button on:click|preventDefault="{handleLogin}">INGRESAR</button>
+  <button
+    on:click|preventDefault="{handleLogin}"
+    disabled={loading}
+    class:loading={loading}
+  >
+    INGRESAR
+  </button>
 </form>

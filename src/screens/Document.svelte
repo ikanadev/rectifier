@@ -1,4 +1,35 @@
 <style>
+  .titleCont {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .titleCont div {
+    flex: 1;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+  }
+  .backIcon {
+    cursor: pointer;
+    background: var(--primary);
+    color: white;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 6px 6px 12px var(--dark), -6px -6px 12px white;
+  }
+  .backIcon:hover {
+    box-shadow: 10px 10px 20px var(--dark), -10px -10px 20px white;
+  }
+  h2 {
+    color: var(--primary);
+  }
   main {
     margin-top: var(--marginTop);
     display: flex;
@@ -44,6 +75,8 @@
 
 <script>
   import { onMount } from 'svelte'
+  import Icon from 'svelte-awesome'
+  import { arrowLeft } from 'svelte-awesome/icons'
 
   import { LIC_NAME } from '../utils/consts'
   import popUps from '../store/popups'
@@ -61,7 +94,7 @@
 
   let marginTop = 0
   let name = ''
-  let isOpenModal = true
+  let isOpenModal = editable
   let isLoadingObsModal = false
   let isOpenObsModal = false
   let isOpenDelObsModal = false
@@ -80,7 +113,19 @@
     marginTop = e.detail
   }
   const onFinish = () => {
-    console.log('FINISH')
+    api.observation
+      .rectifyDocument($document.accessCode)
+      .then(() => {
+        popUps.addSuccessPopUp('Documento revisado')
+        document.setDocument({})
+      })
+      .catch(() => {
+        if (!err || !err.data) {
+          popUps.addErrorPopUp('Error conectando al servidor')
+          return
+        }
+        popUps.addWarningPopUp(err.data.message)
+      })
   }
   const newObservation = ({ detail }) => {
     isLoadingObsModal = true
@@ -127,6 +172,9 @@
         popUps.addWarningPopUp(err.data.message)
       })
   }
+  const goBack = () => {
+    document.setDocument({})
+  }
   const onDeleteObservation = () => {
     isOpenDelObsModal = true
   }
@@ -147,12 +195,23 @@
   })
 </script>
 
-<Header
-  name={name}
-  actionText="TERMINAR"
-  on:load={onLoadHeader}
-  on:action={onFinish}
-/>
+{#if editable}
+  <Header
+    name={name}
+    actionText="TERMINAR"
+    on:load={onLoadHeader}
+    on:action={onFinish}
+  />
+{:else}
+  <div class="titleCont">
+    <div>
+      <span class="backIcon" on:click="{goBack}">
+        <Icon data="{arrowLeft}" scale="1.5" />
+      </span>
+      <h2>Observaciones</h2>
+    </div>
+  </div>
+{/if}
 <DeleteModal
   message={`Borrar observación: ${selectedObs.text}`}
   open={isOpenDelObsModal}
@@ -189,10 +248,12 @@
   <div class="observationsCont">
     <Observations
       editable={editable}
+      comment={$document.comment}
       observations={$document.observations}
       selectedObs={selectedObs}
       on:selectObs={onSelectObservation}
       on:delete={onDeleteObservation}
+      pdfPath={$document.url}
     />
   </div>
 </main>

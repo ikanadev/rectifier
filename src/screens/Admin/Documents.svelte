@@ -115,10 +115,14 @@
     margin-bottom: 15px;
     text-align: center;
   }
+  .loading {
+    opacity: 0.6;
+  }
 </style>
 
 <script>
   import { onMount } from 'svelte'
+  import { slide } from 'svelte/transition'
   import Icon from 'svelte-awesome'
   import {
     clockO,
@@ -133,6 +137,7 @@
   import { getDateFromString } from '../../utils/functions'
   import selected from '../../store/selected'
   import popUps from '../../store/popups'
+  import document from '../../store/document'
   import userData, { getDocuments } from '../../store/userData'
 
   import Modal from '../../components/Modal.svelte'
@@ -149,8 +154,10 @@
   let isOpenDelModal = false
   let isLoadingDelModal = false
   let isOpenCodeModal = false
+  let isLoadingObs = false
   let selectedID = 0
   let selectedCode = ''
+  let percentUploaded = 0
 
   const onDelete = () => {
     isLoadingDelModal = true
@@ -172,19 +179,42 @@
         popUps.addWarningPopUp(err.data.message)
       })
   }
-  const onRegister = ({ detail: { text, file } }) => {
+  const uploadProgress = (loaded, total) => {
+    percentUploaded = (parseInt((loaded*100)/total))
+  }
+  const onRegister = ({ detail: { text, file, resetValues } }) => {
     isLoadingAddModal = true
     api.user
-      .newDocument(project.id, text, file)
+      .newDocument(project.id, text, file, uploadProgress)
       .then((res) => {
+        resetValues()
         isLoadingAddModal = false
         isOpenAddModal = false
         userData.addDocument(project.id, res)
         popUps.addSuccessPopUp('Documento registrado')
+        percentUploaded = 0
       })
       .catch((err) => {
         isLoadingAddModal = false
         isOpenAddModal = false
+        if (!err || !err.data) {
+          popUps.addErrorPopUp('Error conectando al servidor')
+          return
+        }
+        popUps.addWarningPopUp(err.data.message)
+      })
+  }
+  const onSelectDoc = (code) => () => {
+    if (isLoadingObs) return;
+    isLoadingObs = true
+    api.observation
+      .docObservations(code)
+      .then((res) => {
+        isLoadingObs = false
+        document.setDocument(res)
+      })
+      .catch((err) => {
+        isLoadingObs = false
         if (!err || !err.data) {
           popUps.addErrorPopUp('Error conectando al servidor')
           return
@@ -223,7 +253,11 @@
           userData.setDocuments(project.id, res.documents)
         })
         .catch((err) => {
-          console.log(err)
+          if (!err || !err.data) {
+            popUps.addErrorPopUp('Error conectando al servidor')
+            return
+          }
+          popUps.addWarningPopUp(err.data.message)
         })
     }
   })
@@ -246,6 +280,7 @@
   loading="{isLoadingAddModal}"
   on:close="{closeAddModal}"
   on:register="{onRegister}"
+  {percentUploaded}
 />
 <div class="titleCont">
   <div>
@@ -267,7 +302,7 @@
   </div>
 </div>
 {#each Object.keys($documents) as key}
-  <div class="itemCont">
+  <div class="itemCont" transition:slide>
     <article>
       <span class="icon checkIcon" class:checked="{$documents[key].rectified}">
         <Icon data="{$documents[key].rectified ? check : clockO}" scale="2" />
@@ -275,7 +310,7 @@
       <span class="pdfIcon">
         <Icon data="{filePdfO}" scale="2.5" />
       </span>
-      <div>
+      <div class:loading={isLoadingObs} on:click="{onSelectDoc($documents[key].accessCode)}">
         <p>{$documents[key].comment}</p>
         <hr />
         <div class="details">

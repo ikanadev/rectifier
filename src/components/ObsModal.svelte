@@ -103,6 +103,7 @@
       text,
     }
     dispatch('newObservation', data)
+    text = ''
   }
   const handleKeydown = (e) => {
     if (e.keyCode === 27) {

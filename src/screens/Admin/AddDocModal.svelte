@@ -40,6 +40,22 @@
   .pdfSelected {
     color: var(--red);
   }
+  .loadingBar {
+    width: 100%;
+    height: 12px;
+    background: var(--disabled);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .loadingBar div {
+    height: 100%;
+    overflow: hidden;
+    color: white;
+    font-size: 10px;
+    text-align: center;
+    width: var(--percent);
+    background: var(--blue);
+  }
 </style>
 
 <script>
@@ -54,6 +70,7 @@
 
   export let open = false
   export let loading = false
+  export let percentUploaded = 0
 
   let inputFileRef = null
   let text = ''
@@ -61,6 +78,12 @@
   let fileName = 'Seleccione un documento'
 
   const dispatch = createEventDispatcher()
+
+  const resetValues = () => {
+    text = ''
+    file = new File([], '')
+    fileName = 'Selecciones un documento'
+  }
 
   const onOpenFileSelecter = () => {
     if (inputFileRef) {
@@ -82,6 +105,7 @@
     dispatch('register', {
       text,
       file,
+      resetValues,
     })
   }
   const onClose = () => {
@@ -97,6 +121,11 @@
       <span class="pdfIcon" class:pdfSelected="{file.size > 0}">
         <Icon data="{filePdfO}" scale="3" />
       </span>
+      {#if loading}
+        <div class="loadingBar" style="--percent:{`${percentUploaded}%`}">
+          <div>{percentUploaded}%</div>
+        </div>
+      {/if}
       <p>{fileName}</p>
       <br />
       <input
@@ -124,7 +153,7 @@
     <div class="buttonsCont">
       <Button
         type="submit"
-        text="CREAR"
+        text={loading ? 'SUBIENDO' : 'CREAR'}
         blue
         on:action="{onRegister}"
         disabled="{loading}"

@@ -46,11 +46,12 @@ export default (axios) => ({
     return resp.data
   },
 
-  newDocument: async (projectID, comment, document) => {
+  newDocument: async (projectID, comment, document, cb) => {
     const config = {
       headers: {
         [CONTENT_TYPE]: MULTIPART_FORM,
       },
+      onUploadProgress: progressEvent => cb(progressEvent.loaded, progressEvent.total)
     }
     const dataForm = new FormData()
     dataForm.set('projectId', projectID)

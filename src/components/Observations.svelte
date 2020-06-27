@@ -39,7 +39,6 @@
     letter-spacing: 0.1em;
     font-style: italic;
     text-decoration: underline;
-    text-align: right;
   }
   .noObsCont {
     display: flex;
@@ -63,10 +62,20 @@
   export let observations = []
   export let selectedObs = { id: 0, x: 0, y: 0 }
   export let editable = false
+  export let pdfPath = ''
+  export let comment = ''
+
+  const openPDF = () => {
+    window.open(pdfPath)
+    return false
+  }
 </script>
 
 <div class="cont">
   <div class="observation">
+    {#if editable}
+      <p>{comment}</p>
+    {/if}
     <h6>Observaciones:</h6>
     {#if observations.length === 0}
       <span class="noObsCont">
@@ -87,5 +96,5 @@
       {/each}
     {/if}
   </div>
-  <button class="showObs">ABRIR COMO PDF</button>
+  <button class="showObs" on:click="{openPDF}">ABRIR COMO PDF</button>
 </div>

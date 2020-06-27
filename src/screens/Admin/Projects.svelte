@@ -122,7 +122,7 @@
       })
   }
 
-  const onRegister = ({ detail: { name, institute } }) => {
+  const onRegister = ({ detail: { name, institute, clearData } }) => {
     if (name.trim() === '' || institute.trim() === '') {
       popUps.addWarningPopUp('Nombre e institución no pueden estar vacíos')
       return
@@ -131,6 +131,7 @@
     api.user
       .newProject(name, institute)
       .then((res) => {
+        clearData()
         userData.addProject(res)
         popUps.addSuccessPopUp(`Proyecto ${res.name} guardado`)
         isLoadingAddModal = false

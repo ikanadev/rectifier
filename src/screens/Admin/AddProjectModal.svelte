@@ -48,6 +48,10 @@
   let institute = ''
 
   const dispatch = createEventDispatcher()
+  const clearData = () => {
+    name = ''
+    institute = ''
+  }
   const onClose = () => {
     dispatch('close')
   }
@@ -55,6 +59,7 @@
     dispatch('register', {
       name,
       institute,
+      clearData,
     })
   }
 </script>
