@@ -180,7 +180,7 @@
       })
   }
   const uploadProgress = (loaded, total) => {
-    percentUploaded = (parseInt((loaded*100)/total))
+    percentUploaded = parseInt((loaded * 100) / total)
   }
   const onRegister = ({ detail: { text, file, resetValues } }) => {
     isLoadingAddModal = true
@@ -205,7 +205,7 @@
       })
   }
   const onSelectDoc = (code) => () => {
-    if (isLoadingObs) return;
+    if (isLoadingObs) return
     isLoadingObs = true
     api.observation
       .docObservations(code)
@@ -310,7 +310,10 @@
       <span class="pdfIcon">
         <Icon data="{filePdfO}" scale="2.5" />
       </span>
-      <div class:loading={isLoadingObs} on:click="{onSelectDoc($documents[key].accessCode)}">
+      <div
+        class:loading="{isLoadingObs}"
+        on:click="{onSelectDoc($documents[key].accessCode)}"
+      >
         <p>{$documents[key].comment}</p>
         <hr />
         <div class="details">

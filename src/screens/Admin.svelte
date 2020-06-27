@@ -58,7 +58,7 @@
 />
 <main style="--marginTop:{marginTop}px">
   {#if Object.keys($document).length !== 0}
-    <Document editable={false} />
+    <Document editable="{false}" />
   {:else if $selected.project !== 0}
     <Documents />
   {:else}

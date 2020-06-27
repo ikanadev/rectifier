@@ -48,12 +48,13 @@
   import document from '../../store/document'
   import popUps from '../../store/popups'
 
-  let code  = ''
+  let code = ''
   let loading = false
 
   const onSubmit = () => {
     loading = true
-    api.observation.docObservations(code)
+    api.observation
+      .docObservations(code)
       .then((res) => {
         loading = false
         document.setDocument(res)
@@ -75,9 +76,13 @@
     bind:value="{code}"
     type="text"
     placeholder="Código del Documento"
-    disabled={loading}
+    disabled="{loading}"
   />
-  <button class:disabled={loading} disabled={loading} on:click|preventDefault="{onSubmit}">
+  <button
+    class:disabled="{loading}"
+    disabled="{loading}"
+    on:click|preventDefault="{onSubmit}"
+  >
     {loading ? 'VERIFICANDO' : 'REVISAR DOCUMENTO'}
   </button>
 </form>

@@ -88,7 +88,7 @@
   const onDelete = (e) => {
     e.stopPropagation()
     dispatch('delete')
-  } 
+  }
   afterUpdate(() => {
     if (expanded) {
       height.set(bindRef.clientHeight)

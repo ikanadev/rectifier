@@ -51,7 +51,8 @@ export default (axios) => ({
       headers: {
         [CONTENT_TYPE]: MULTIPART_FORM,
       },
-      onUploadProgress: progressEvent => cb(progressEvent.loaded, progressEvent.total)
+      onUploadProgress: (progressEvent) =>
+        cb(progressEvent.loaded, progressEvent.total),
     }
     const dataForm = new FormData()
     dataForm.set('projectId', projectID)

@@ -99,7 +99,7 @@
   let isOpenObsModal = false
   let isOpenDelObsModal = false
   let isLoadingDelObsModal = false
-  let selectedObs = { id: 0, x: 0, y:0, text: '' }
+  let selectedObs = { id: 0, x: 0, y: 0, text: '' }
 
   const onContinue = () => {
     if (name.trim() === '') {
@@ -130,7 +130,14 @@
   const newObservation = ({ detail }) => {
     isLoadingObsModal = true
     api.observation
-      .newObservation($document.id, detail.x, detail.y, detail.text, name, $document.accessCode)
+      .newObservation(
+        $document.id,
+        detail.x,
+        detail.y,
+        detail.text,
+        name,
+        $document.accessCode
+      )
       .then((res) => {
         popUps.addSuccessPopUp('Observación registrada')
         document.addObservation(res)
@@ -150,8 +157,8 @@
     selectedObs = detail
     window.scrollTo({
       top: selectedObs.y - 60,
-      behavior: 'smooth'
-    });
+      behavior: 'smooth',
+    })
   }
   const deleteObservation = () => {
     isLoadingDelObsModal = true
@@ -197,10 +204,10 @@
 
 {#if editable}
   <Header
-    name={name}
+    {name}
     actionText="TERMINAR"
-    on:load={onLoadHeader}
-    on:action={onFinish}
+    on:load="{onLoadHeader}"
+    on:action="{onFinish}"
   />
 {:else}
   <div class="titleCont">
@@ -213,13 +220,13 @@
   </div>
 {/if}
 <DeleteModal
-  message={`Borrar observación: ${selectedObs.text}`}
-  open={isOpenDelObsModal}
-  loading={isLoadingDelObsModal}
-  on:delete={deleteObservation}
-  on:close={closeDelObsModal}
+  message="{`Borrar observación: ${selectedObs.text}`}"
+  open="{isOpenDelObsModal}"
+  loading="{isLoadingDelObsModal}"
+  on:delete="{deleteObservation}"
+  on:close="{closeDelObsModal}"
 />
-<Modal open={isOpenModal}>
+<Modal open="{isOpenModal}">
   <h3>Ingrese su Nombre</h3>
   <div class="inputCont">
     <input
@@ -228,32 +235,32 @@
       bind:value="{name}"
     />
   </div>
-  <Button text="CONTINUAR" on:action={onContinue} blue />
+  <Button text="CONTINUAR" on:action="{onContinue}" blue />
 </Modal>
 <main style="--marginTop:{marginTop}px">
   <div class="pdfCont">
     <PdfViewer
-      editable={editable}
-      pdfPath={$document.url}
-      observations={$document.observations}
-      selectedObs={selectedObs}
-      on:selectObs={onSelectObservation}
-      on:newObservation={newObservation}
-      on:openObsModal={openObsModal}
-      on:closeObsModal={closeObsModal}
+      {editable}
+      pdfPath="{$document.url}"
+      observations="{$document.observations}"
+      {selectedObs}
+      on:selectObs="{onSelectObservation}"
+      on:newObservation="{newObservation}"
+      on:openObsModal="{openObsModal}"
+      on:closeObsModal="{closeObsModal}"
       {isOpenObsModal}
       {isLoadingObsModal}
     />
   </div>
   <div class="observationsCont">
     <Observations
-      editable={editable}
-      comment={$document.comment}
-      observations={$document.observations}
-      selectedObs={selectedObs}
-      on:selectObs={onSelectObservation}
-      on:delete={onDeleteObservation}
-      pdfPath={$document.url}
+      {editable}
+      comment="{$document.comment}"
+      observations="{$document.observations}"
+      {selectedObs}
+      on:selectObs="{onSelectObservation}"
+      on:delete="{onDeleteObservation}"
+      pdfPath="{$document.url}"
     />
   </div>
 </main>

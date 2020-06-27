@@ -75,7 +75,8 @@
   button:hover {
     background: #fa4e16;
   }
-  .disabled, .disabled:hover {
+  .disabled,
+  .disabled:hover {
     background: var(--disabled);
   }
 </style>
@@ -121,8 +122,8 @@
         <Icon data="{times}" scale="1.5" class="modalIcon" />
       </span>
     </span>
-    <textarea rows="3" bind:value="{text}" disabled={isLoading}></textarea>
-    <button on:click="{onSubmit}" class:disabled={isLoading}>
+    <textarea rows="3" bind:value="{text}" disabled="{isLoading}"></textarea>
+    <button on:click="{onSubmit}" class:disabled="{isLoading}">
       {isLoading ? 'REGISTRANDO...' : 'REGISTRAR'}
     </button>
   </div>

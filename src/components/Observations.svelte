@@ -88,7 +88,7 @@
       {#each observations as observation}
         <ObsItem
           {observation}
-          expanded={selectedObs.id === observation.id}
+          expanded="{selectedObs.id === observation.id}"
           on:selectObs
           on:delete
           {editable}

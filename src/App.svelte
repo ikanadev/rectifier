@@ -21,11 +21,9 @@
 {:then}
   {#if $isLogged}
     <Admin />
+  {:else if Object.keys($document).length > 0}
+    <Document editable="{true}" />
   {:else}
-    {#if Object.keys($document).length > 0}
-      <Document editable={true} />
-    {:else}
-      <Home />
-    {/if}
+    <Home />
   {/if}
 {/await}

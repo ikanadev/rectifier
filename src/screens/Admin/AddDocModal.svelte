@@ -153,7 +153,7 @@
     <div class="buttonsCont">
       <Button
         type="submit"
-        text={loading ? 'SUBIENDO' : 'CREAR'}
+        text="{loading ? 'SUBIENDO' : 'CREAR'}"
         blue
         on:action="{onRegister}"
         disabled="{loading}"

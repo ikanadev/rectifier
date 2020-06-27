@@ -1,8 +1,14 @@
 <style>
   @keyframes alert {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
   .pdfjs-container {
     width: 100%;
@@ -107,7 +113,7 @@
     top="{`${modalCoords.y - 30 - (isOpenObsModal ? scrollY : 0)}px`}"
     left="{`${modalCoords.x + 10}px`}"
     hidden="{!isOpenObsModal}"
-    isLoading={isLoadingObsModal}
+    isLoading="{isLoadingObsModal}"
     onClose="{closeModal}"
     {markerCoords}
     on:newObservation

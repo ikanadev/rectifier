@@ -33,7 +33,8 @@
   button:hover {
     background: #fa4e16;
   }
-  .loading, .loading:hover {
+  .loading,
+  .loading:hover {
     background: var(--disabled);
   }
 </style>
@@ -53,11 +54,20 @@
   let loading = false
 
   const handleRegister = () => {
-    if (name.trim() === '' || lastName.trim() === '' || email.trim() === '' || password.trim() === '') {
+    if (
+      name.trim() === '' ||
+      lastName.trim() === '' ||
+      email.trim() === '' ||
+      password.trim() === ''
+    ) {
       popUps.addWarningPopUp('Complete todos los campos')
       return
     }
-    if (!/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
+    if (
+      !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+      )
+    ) {
       popUps.addWarningPopUp('Ingrese un email válido')
       return
     }
@@ -89,8 +99,8 @@
   <input bind:value="{password}" type="password" placeholder="Password" />
   <button
     on:click|preventDefault="{handleRegister}"
-    disabled={loading}
-    class:loading={loading}
+    disabled="{loading}"
+    class:loading
   >
     REGISTRARME
   </button>

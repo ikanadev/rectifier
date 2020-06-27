@@ -10,13 +10,15 @@ const createDocumentStore = () => {
     addObservation: (observation) => {
       update((data) => ({
         ...data,
-        observations: [...data.observations, observation].sort((ob1, ob2) => ob1.y - ob2.y)
+        observations: [...data.observations, observation].sort(
+          (ob1, ob2) => ob1.y - ob2.y
+        ),
       }))
     },
     deleteObservation: (obsID) => {
       update((data) => ({
         ...data,
-        observations: data.observations.filter((obs) => obs.id !== obsID)
+        observations: data.observations.filter((obs) => obs.id !== obsID),
       }))
     },
   }

@@ -37,7 +37,8 @@
   button:hover {
     background: #fa4e16;
   }
-  .loading, .loading:hover {
+  .loading,
+  .loading:hover {
     background: var(--disabled);
   }
 </style>
@@ -80,8 +81,8 @@
   <input type="password" bind:value="{password}" placeholder="Password" />
   <button
     on:click|preventDefault="{handleLogin}"
-    disabled={loading}
-    class:loading={loading}
+    disabled="{loading}"
+    class:loading
   >
     INGRESAR
   </button>

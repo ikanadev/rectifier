@@ -31,5 +31,5 @@ export default (axios) => ({
   rectifyDocument: async (docCode) => {
     const resp = await axios.get(endpoints.observation.rectifyDocument(docCode))
     return resp.data
-  }
+  },
 })
