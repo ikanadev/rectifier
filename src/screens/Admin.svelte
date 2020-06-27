@@ -42,7 +42,7 @@
       })
       .catch((err) => {
         if (!err || !err.data) {
-          popUps.addErrorPopUp('Error conectando al servidor')
+          popUps.addErrorPopUp('Hubo un error con el servidor')
           return
         }
         popUps.addWarningPopUp(err.data.message)
