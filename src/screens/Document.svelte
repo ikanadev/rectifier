@@ -119,7 +119,7 @@
         popUps.addSuccessPopUp('Documento revisado')
         document.setDocument({})
       })
-      .catch(() => {
+      .catch((err) => {
         if (!err || !err.data) {
           popUps.addErrorPopUp('Hubo un error con el servidor')
           return

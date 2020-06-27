@@ -1,9 +1,3 @@
-<style>
-  div {
-    margin-top: 75px;
-  }
-</style>
-
 <script>
   import { isLogged } from './store/user'
   import document from './store/document'
