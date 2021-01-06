@@ -23,7 +23,7 @@
     "svelte": "^3.23.1"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "pdfjs-dist": "^2.4.456",
     "sirv-cli": "^0.4.6",
     "svelte-awesome": "^2.3.0"
